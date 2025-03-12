@@ -8,7 +8,16 @@ using UnityEngine.UI;
 
 public class WeaopnController : MonoBehaviour 
 {
-	public GameObject WeaponObject;
+    public enum FierMode
+    {
+        None, Brust, Auto
+    }
+    [SerializeField]
+    public List<WeaponInfo> Weapons = new List<WeaponInfo>(); 
+
+    public FierMode fierMode = FierMode.None;
+
+    public GameObject WeaponObject;
 	public GameObject BulletPrifab;
 
 	public Transform RayObject;
@@ -29,6 +38,7 @@ public class WeaopnController : MonoBehaviour
     public UnityEvent OnReload;
 
 	bool IsAiming;
+    uint MagCap = 12;
 
 	void Update () 
     {
@@ -75,8 +85,18 @@ public class WeaopnController : MonoBehaviour
     }
     GameObject CheckShot(RaycastHit2D hit)
     {
-        if (!Input.GetMouseButtonDown(0))
-            return null;
+        if (fierMode == FierMode.Auto)
+            if (!Input.GetMouseButton(0))
+            {
+                Animator.SetBool("ShotLock", false);
+
+                return null;
+            }
+
+
+        if (fierMode == FierMode.None)
+            if (!Input.GetMouseButtonDown(0))
+                return null;
 
         if (Ammo <= 0)
             if(Mags <= 0)
@@ -98,29 +118,56 @@ public class WeaopnController : MonoBehaviour
 
         GameObject target = hit.transform.gameObject;
 
-        //if (target.tag != "Enemy")
-        //    return target;
-
-        //GameController.instance.cockroaches.Where(x => x.gameObject.Equals(target)).First().Die();
-
         return target;
 
     }
 
     void Shot()
     {
-        Ammo--;
-        Instantiate(BulletPrifab, ProjectilePosition).transform.SetParent(null);
-        AudioSource.PlayClipAtPoint(ShotSound,transform.position);
-        Animator.SetTrigger("Shot");
-        OnShot.Invoke();
+        if (fierMode == FierMode.None)
+            Animator.SetTrigger("Shot");
+        if (fierMode == FierMode.Auto)
+        {
+            Animator.SetBool("ShotLock",true);
+        }
     }
     void Reload()
     {
         Mags--;
-        Ammo = 12;
+        Ammo = MagCap;
         AudioSource.PlayClipAtPoint(ReloadSound, transform.position);
         Animator.SetTrigger("Reload");
         OnReload.Invoke();
+    }
+
+    public void Fier()
+    {
+        Ammo--;
+        Instantiate(BulletPrifab, ProjectilePosition).transform.SetParent(null);
+        AudioSource.PlayClipAtPoint(ShotSound, transform.position);
+        OnShot.Invoke();
+
+    }
+    public void SetWeaponTo(WeaponInfo weapon)
+    {
+        foreach (var item in Weapons)
+            item.Appearance.SetActive(false);
+
+        weapon.Appearance.SetActive(true);
+
+        ShotSound = weapon.FeirSound;
+        MagCap = weapon.MagCapacity;
+        fierMode = weapon.Fiermode;
+
+    }
+
+    [Serializable]
+    public class WeaponInfo
+    {
+        public GameObject Appearance;
+
+        public FierMode Fiermode;
+        public uint MagCapacity;
+        public AudioClip FeirSound;
     }
 }

@@ -14,8 +14,13 @@ public class Cockroach : MonoBehaviour
 
 	void Start () 
     {
-		
-	}
+		if(!Target)
+			Target = GameController.instance.PlayerPosition;
+
+		GameController.instance.cockroaches.Add(this);
+
+		Speed = GameController.instance.EnemiesSpeed;
+    }
 	void Update () 
     {
 		if (Target)
@@ -30,6 +35,7 @@ public class Cockroach : MonoBehaviour
 
 		if (Distance <= 0.1f)
 		{
+			GameController.instance.GameOver();
 			OnCatchTarget.Invoke();
 			return;
 		}
@@ -41,7 +47,9 @@ public class Cockroach : MonoBehaviour
 
 	public void Die()
 	{
-		transform.position = Vector2.zero;
-		gameObject.SetActive(false);
+        GameController.instance.cockroaches.Remove(this);
+		GameController.instance.OnEnemyDie.Invoke();
+
+        Destroy(gameObject);
 	}
 }
