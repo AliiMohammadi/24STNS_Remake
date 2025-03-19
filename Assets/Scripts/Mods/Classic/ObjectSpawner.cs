@@ -57,7 +57,6 @@ public class ObjectSpawner : MonoBehaviour
         [Range(0, 100)]
         public float SpawnProbeblity;
 
-
         public bool CanSpawn()
         {
             return (SpawnProbeblity >= (UnityEngine.Random.Range(1,1000000)/10000f));

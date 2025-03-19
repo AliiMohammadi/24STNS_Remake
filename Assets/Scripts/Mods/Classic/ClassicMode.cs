@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ClassicMode : MonoBehaviour 
@@ -9,6 +10,7 @@ public class ClassicMode : MonoBehaviour
     public ulong Score;
 
     public float StepSpawn;
+    public float DarknesScale;
 
     public AudioSource GameplayMusic;
 
@@ -20,20 +22,37 @@ public class ClassicMode : MonoBehaviour
     public GameObject Rain2;
     public GameObject Rain3;
     public GameObject RainSound;
+    public GameObject Lightning;
+
+    public int MusicAt;
+    public int SpawnUZIAt;
+    public int StartRainAt;
+    float Steps
+    {
+        get
+        {
+            return (GameController.instance.PlayerPosition.position.y - StartYstep);
+        }
+    }
 
     Clock clock;
 
     ObjectSpawner spawner;
 
     float StartYstep;
-    ulong steps;
 
     bool SpawnedUzi;
 
+    bool Rained;
+
     int RandomRainstart;
+    int NextLighning;
 
     void Start()
     {
+
+        Screen.SetResolution(1439,1080,false);
+
         spawner = FindObjectOfType<ObjectSpawner>();
         StartYstep = GameController.instance.PlayerPosition.position.y;
         clock = FindObjectOfType<Clock>();
@@ -41,7 +60,10 @@ public class ClassicMode : MonoBehaviour
         DarknessMaterial.color = new Color(1,1,1);
         clock.SetTime(new System.TimeSpan(7,30,0));
 
-        RandomRainstart = Random.Range(120,160);
+        RandomRainstart = (int)Random.Range(StartRainAt, StartRainAt * 1.33f);
+
+        NextLighning = (int)Random.Range(RandomRainstart, RandomRainstart * 2.5f);
+
     }
 
     public void AddScore()
@@ -51,49 +73,93 @@ public class ClassicMode : MonoBehaviour
 
     public void UpdateStepCounter()
     {
+        RandomSpawn();
+        NightDencitySet();
+        MusicSet();
+        SpawnUZi();
+        SetRain();
+        SparkLightning();
+        //clock.SetTime(new System.TimeSpan());
+    }
 
-        float playerYstep = (GameController.instance.PlayerPosition.position.y - StartYstep);
-
-        if ((int)(playerYstep % StepSpawn) == 0)
+    void RandomSpawn()
+    {
+        if ((int)(Steps % StepSpawn) == 0)
             spawner.SpawnRandom();
+    }
+    void NightDencitySet()
+    {
+        float distance = Steps / DarknesScale;
 
-        float Co = (255 - playerYstep) / 255;
-        float light = (1 /(( (255 - playerYstep)) / 35)) * 60;
+        if (distance > 220)
+            return;
 
-        if(playerYstep < 220)
-            DarknessMaterial.color = new Color(Co, Co, Co);
+
+        float Co = (255 - distance) / 255;
+        float light = (1 / (((255 - distance)) / 35)) * 60;
+
+
+        DarknessMaterial.color = new Color(Co, Co, Co);
 
         if (light > 10)
             PlayerLight.range = light;
-
-        if (!SpawnedUzi && Score > 100)
+    }
+    void MusicSet()
+    {
+        if (!GameplayMusic.isPlaying && (int)Score > MusicAt)
+            GameplayMusic.Play();
+    }
+    void SpawnUZi()
+    {
+        if (!SpawnedUzi && Score > (ulong)SpawnUZIAt)
         {
             SpawnedUzi = true;
             spawner.SpawnItem(spawner.Objects[2]);
         }
 
-        if(!GameplayMusic.isPlaying && Score > 15)
-            GameplayMusic.Play();
+    }
+    void SetRain()
+    {
 
-
-        if(Score > (ulong)RandomRainstart)
+        if (Score > (ulong)RandomRainstart)
         {
+            Rained = true;
+
             if (!Rain1.activeSelf)
             {
                 Rain1.SetActive(true);
                 RainSound.SetActive(true);
             }
-            else if (Score > (ulong)RandomRainstart + 20)
+            else if (Score > (ulong)RandomRainstart + 30)
             {
                 Rain2.SetActive(true);
             }
-            else if (Score > (ulong)RandomRainstart + 40)
+            else if (Score > (ulong)RandomRainstart + 60)
             {
                 Rain3.SetActive(true);
             }
         }
+    }
+    void SparkLightning()
+    {
+        if (!Rained)
+            return;
 
+        if ((long)Score < NextLighning)
+             return;
 
-        //clock.SetTime(new System.TimeSpan());
+        Lightning.SetActive(false);
+        Lightning.SetActive(true);
+
+        NextLighning = (int)Random.Range(Score, Score + 100);
+    }
+
+    public void GameOver()
+    {
+        GameplayMusic.Stop();
+    }
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

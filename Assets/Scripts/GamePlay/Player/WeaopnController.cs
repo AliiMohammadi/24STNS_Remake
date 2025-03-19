@@ -19,9 +19,11 @@ public class WeaopnController : MonoBehaviour
 
     public GameObject WeaponObject;
 	public GameObject BulletPrifab;
+	public GameObject ShellPrifab;
 
 	public Transform RayObject;
 	public Transform RayPosittion;
+	public Transform ShellDropPosition;
 	public Transform RayPoint;
 	public Transform ProjectilePosition;
 
@@ -127,15 +129,14 @@ public class WeaopnController : MonoBehaviour
         if (fierMode == FierMode.None)
             Animator.SetTrigger("Shot");
         if (fierMode == FierMode.Auto)
-        {
-            Animator.SetBool("ShotLock",true);
-        }
+            Animator.SetBool("ShotLock", true);
+
     }
     void Reload()
     {
         Mags--;
         Ammo = MagCap;
-        AudioSource.PlayClipAtPoint(ReloadSound, transform.position);
+        SoundPlayer.PlayAudio(ReloadSound);
         Animator.SetTrigger("Reload");
         OnReload.Invoke();
     }
@@ -143,8 +144,14 @@ public class WeaopnController : MonoBehaviour
     public void Fier()
     {
         Ammo--;
+
         Instantiate(BulletPrifab, ProjectilePosition).transform.SetParent(null);
-        AudioSource.PlayClipAtPoint(ShotSound, transform.position);
+        Instantiate(ShellPrifab, ShellDropPosition).transform.SetParent(null);
+
+
+        SoundPlayer.PlayAudio(ShotSound,1,UnityEngine.Random.Range(0.9500f,1.0700f));
+        //SoundPlayer.PlayAudio(ShotSound,1,1);
+
         OnShot.Invoke();
 
     }

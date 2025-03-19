@@ -22,7 +22,7 @@ public class WeaponItem : MonoBehaviour
             return;
 
         controler.SetWeaponTo(controler.Weapons[WeaponIndex]);
-        AudioSource.PlayClipAtPoint(PickSound, transform.position);
+        SoundPlayer.PlayAudio(PickSound);
         Destroy(gameObject);
     }
 }

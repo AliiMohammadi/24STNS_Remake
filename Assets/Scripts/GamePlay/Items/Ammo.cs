@@ -14,7 +14,7 @@ public class Ammo : MonoBehaviour
             return;
 
         GameController.instance.PlayerWeapon.Mags++;
-        AudioSource.PlayClipAtPoint(PickSound, transform.position);
+        SoundPlayer.PlayAudio(PickSound);
         Destroy(gameObject);
     }
 }

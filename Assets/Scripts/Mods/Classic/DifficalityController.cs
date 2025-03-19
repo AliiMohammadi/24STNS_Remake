@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class DifficalityController : MonoBehaviour 
 {
+    public int NextLevelCycle;
+
     ClassicMode game;
     ObjectSpawner spawner;
 
@@ -16,15 +18,18 @@ public class DifficalityController : MonoBehaviour
 
     public void UpdateDifficality()
     {
-        if (game.Score % 10 == 0)
+        if ((int)game.Score % NextLevelCycle == 0)
             AddOneLevelHigher();
     }
 
-    void AddOneLevelHigher()
+    public void AddOneLevelHigher()
     {
         if (spawner.Objects[0].SpawnProbeblity < 100)
-            spawner.Objects[0].SpawnProbeblity += 1;
+            spawner.Objects[0].SpawnProbeblity += 1f;
 
         GameController.instance.EnemiesSpeed *= 1.01f;
+
+        if (spawner.Objects[1].SpawnProbeblity < 100)
+            spawner.Objects[1].SpawnProbeblity += 0.025f;
     }
 }

@@ -61,6 +61,8 @@
      <Compile Include="Assets\Scripts\GamePlay\Player\animatorFunctionsetter.cs" />
      <Compile Include="Assets\Scripts\GamePlay\Player\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\GamePlay\Player\WeaopnController.cs" />
+     <Compile Include="Assets\Scripts\GamePlay\ShellDrop.cs" />
+     <Compile Include="Assets\Scripts\GamePlay\SoundPlayer.cs" />
      <Compile Include="Assets\Scripts\GamePlay\UI\Clock.cs" />
      <Compile Include="Assets\Scripts\GamePlay\UI\GUIpanelController.cs" />
      <Compile Include="Assets\Scripts\GamePlay\UI\WeaponUI.cs" />
@@ -68,6 +70,7 @@
      <Compile Include="Assets\Scripts\Mods\Classic\DifficalityController.cs" />
      <Compile Include="Assets\Scripts\Mods\Classic\InfinityBackground.cs" />
      <Compile Include="Assets\Scripts\Mods\Classic\ObjectSpawner.cs" />
+     <Compile Include="Assets\Scripts\Mods\Classic\ScoreUI.cs" />
      <Compile Include="Assets\Scripts\ScriptableObject\ObjectInfo.cs" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>D:/Developing/GameProjects/24STNS Remake/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>

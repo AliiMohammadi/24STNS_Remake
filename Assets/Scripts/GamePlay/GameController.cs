@@ -31,18 +31,16 @@ public class GameController : MonoBehaviour
 	void Start () 
     {
         instance = this;
+        Time.timeScale = 1;
+
     }
-	void Update () 
-    {
-		
-	}
 
 	public void GameOver()
 	{
         PanelController.ShowGameOverPanel();
 
         Time.timeScale = 0;
-
+        PlayerWeapon.enabled = false;
         OnGameOver.Invoke();
     }
 }
