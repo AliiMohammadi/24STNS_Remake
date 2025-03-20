@@ -5,29 +5,53 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class Cockroach : MonoBehaviour 
+public class Cockroach : TemproryObject 
 {
 	public Transform Target;
 	public float Speed;
 
 	public UnityEvent OnCatchTarget;
 
-	void Start () 
+	bool Dead;
+	Animator animator;
+
+	protected override void Start () 
     {
+		base.Start ();
+
 		if(!Target)
 			Target = GameController.instance.PlayerPosition;
 
 		GameController.instance.cockroaches.Add(this);
 
 		Speed = GameController.instance.EnemiesSpeed;
+
+        animator = GetComponent<Animator>();
     }
-	void Update () 
+    protected override void Update () 
     {
-		if (Target)
-            ChaseTarget(Target);
+        base.Update();
 
+        if (Target && !Dead)
+            ChaseTarget(Target);
+    }
+    protected override void CheckVisible()
+    {
+		if(Dead)
+			base.CheckVisible();
     }
 
+	public void Die()
+	{
+		Dead = true;
+
+        animator.SetBool("Dead",true);
+
+        GameController.instance.cockroaches.Remove(this);
+		GameController.instance.OnEnemyDie.Invoke();
+		GetComponent<CircleCollider2D>().enabled = false;
+        //Destroy(gameObject);
+	}
 
     void ChaseTarget(Transform target)
 	{
@@ -44,12 +68,4 @@ public class Cockroach : MonoBehaviour
 		transform.right = dir.normalized;
 		transform.Translate(new Vector2(Speed, 0) * Time.deltaTime);
     }
-
-	public void Die()
-	{
-        GameController.instance.cockroaches.Remove(this);
-		GameController.instance.OnEnemyDie.Invoke();
-
-        Destroy(gameObject);
-	}
 }

@@ -58,6 +58,8 @@
      <Compile Include="Assets\Scripts\GamePlay\GameController.cs" />
      <Compile Include="Assets\Scripts\GamePlay\Items\Ammo.cs" />
      <Compile Include="Assets\Scripts\GamePlay\Items\WeaponItem.cs" />
+     <Compile Include="Assets\Scripts\GamePlay\Objects\GalssBottle.cs" />
+     <Compile Include="Assets\Scripts\GamePlay\Objects\TemproryObject.cs" />
      <Compile Include="Assets\Scripts\GamePlay\Player\animatorFunctionsetter.cs" />
      <Compile Include="Assets\Scripts\GamePlay\Player\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\GamePlay\Player\WeaopnController.cs" />

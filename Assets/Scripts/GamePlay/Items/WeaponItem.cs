@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponItem : MonoBehaviour 
+public class WeaponItem : TemproryObject 
 {
     public AudioClip PickSound;
 
@@ -11,8 +11,9 @@ public class WeaponItem : MonoBehaviour
 
     WeaopnController controler;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         controler = FindObjectOfType<WeaopnController>();
     }
 

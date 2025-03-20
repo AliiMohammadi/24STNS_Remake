@@ -18,8 +18,13 @@ public class DifficalityController : MonoBehaviour
 
     public void UpdateDifficality()
     {
-        if ((int)game.Score % NextLevelCycle == 0)
-            AddOneLevelHigher();
+        if ((int)game.Score % NextLevelCycle != 0)
+            return;
+
+        AddOneLevelHigher();
+
+        if (400 < (int)game.Score)
+            NextLevelCycle++;
     }
 
     public void AddOneLevelHigher()

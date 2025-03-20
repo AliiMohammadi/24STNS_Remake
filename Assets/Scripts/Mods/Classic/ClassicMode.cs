@@ -24,9 +24,15 @@ public class ClassicMode : MonoBehaviour
     public GameObject RainSound;
     public GameObject Lightning;
 
+    public GameObject GamePlayUI;
+    public GameObject MenuUI;
+
     public int MusicAt;
     public int SpawnUZIAt;
     public int StartRainAt;
+
+    static bool IsReplay;
+
     float Steps
     {
         get
@@ -48,6 +54,8 @@ public class ClassicMode : MonoBehaviour
     int RandomRainstart;
     int NextLighning;
 
+    uint DefualtMagAmount;
+
     void Start()
     {
 
@@ -55,22 +63,40 @@ public class ClassicMode : MonoBehaviour
 
         spawner = FindObjectOfType<ObjectSpawner>();
         StartYstep = GameController.instance.PlayerPosition.position.y;
-        clock = FindObjectOfType<Clock>();
+        //clock = FindObjectOfType<Clock>();
 
         DarknessMaterial.color = new Color(1,1,1);
-        clock.SetTime(new System.TimeSpan(7,30,0));
+        //clock.SetTime(new System.TimeSpan(7,30,0));
 
         RandomRainstart = (int)Random.Range(StartRainAt, StartRainAt * 1.33f);
 
         NextLighning = (int)Random.Range(RandomRainstart, RandomRainstart * 2.5f);
 
+        DefualtMagAmount = GameController.instance.PlayerWeapon.Mags;
+        GameController.instance.PlayerWeapon.Mags = uint.MaxValue;
+
+        if (IsReplay)
+        {
+            HideMenu();
+            RestartWeapon();
+        }
+    }
+    void Update()
+    {
+        if (!IsReplay)
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                HideMenu();
+                HideMenu();
+                RestartWeapon();
+                IsReplay = true;
+            }
     }
 
     public void AddScore()
     {
         Score++;
     }
-
     public void UpdateStepCounter()
     {
         RandomSpawn();
@@ -82,6 +108,16 @@ public class ClassicMode : MonoBehaviour
         //clock.SetTime(new System.TimeSpan());
     }
 
+    void HideMenu()
+    {
+        MenuUI.SetActive(false);
+        GamePlayUI.SetActive(true);
+    }
+    void RestartWeapon()
+    {
+        GameController.instance.PlayerWeapon.Ammo = GameController.instance.PlayerWeapon.Weapons[0].MagCapacity;
+        GameController.instance.PlayerWeapon.Mags = DefualtMagAmount;
+    }
     void RandomSpawn()
     {
         if ((int)(Steps % StepSpawn) == 0)
