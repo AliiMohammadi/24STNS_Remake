@@ -25,7 +25,7 @@ public class TemproryObject : MonoBehaviour
 
 	protected virtual void CheckVisible()
 	{
-        if (Showed && !renderer.isVisible)
+        if (Showed && !renderer.isVisible || GameController.instance.IsLeftBehinded(transform.position))
             Destroy(gameObject);
     }
 }

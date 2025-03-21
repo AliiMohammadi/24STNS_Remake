@@ -43,4 +43,9 @@ public class GameController : MonoBehaviour
         PlayerWeapon.enabled = false;
         OnGameOver.Invoke();
     }
+
+	public bool IsLeftBehinded(Vector2 ObjectPosition)
+	{
+		return PlayerPosition.position.y > ObjectPosition.y + 10;
+    }
 }

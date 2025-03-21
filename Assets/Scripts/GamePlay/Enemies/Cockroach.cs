@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -26,9 +27,10 @@ public class Cockroach : TemproryObject
 
 		Speed = GameController.instance.EnemiesSpeed;
 
-        animator = GetComponent<Animator>();
+		animator = GetComponent<Animator>();
+
     }
-    protected override void Update () 
+	protected override void Update () 
     {
         base.Update();
 
@@ -51,7 +53,7 @@ public class Cockroach : TemproryObject
 		GameController.instance.OnEnemyDie.Invoke();
 		GetComponent<CircleCollider2D>().enabled = false;
         //Destroy(gameObject);
-	}
+    }
 
     void ChaseTarget(Transform target)
 	{

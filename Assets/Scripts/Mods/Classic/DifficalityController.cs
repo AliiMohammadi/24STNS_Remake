@@ -29,12 +29,16 @@ public class DifficalityController : MonoBehaviour
 
     public void AddOneLevelHigher()
     {
-        if (spawner.Objects[0].SpawnProbeblity < 100)
-            spawner.Objects[0].SpawnProbeblity += 1f;
+        Add(0, 1);
+        Add(1, 0.025f);
+        Add(5, 0.001f);
 
         GameController.instance.EnemiesSpeed *= 1.01f;
-
-        if (spawner.Objects[1].SpawnProbeblity < 100)
-            spawner.Objects[1].SpawnProbeblity += 0.025f;
+    }
+    
+    void Add(int index,float value)
+    {
+        if (spawner.Objects[index].SpawnProbeblity < 100)
+            spawner.Objects[index].SpawnProbeblity += value;
     }
 }

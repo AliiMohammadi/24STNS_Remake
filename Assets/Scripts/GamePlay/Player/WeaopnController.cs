@@ -167,14 +167,4 @@ public class WeaopnController : MonoBehaviour
         fierMode = weapon.Fiermode;
 
     }
-
-    [Serializable]
-    public class WeaponInfo
-    {
-        public GameObject Appearance;
-
-        public FierMode Fiermode;
-        public uint MagCapacity;
-        public AudioClip FeirSound;
-    }
 }

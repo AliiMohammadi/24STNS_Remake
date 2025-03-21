@@ -4,7 +4,7 @@ using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShellDrop : MonoBehaviour 
+public class ShellDrop : TemproryObject 
 {
 	public float ForceMo;
 	public float FramMo;
@@ -17,19 +17,18 @@ public class ShellDrop : MonoBehaviour
 	int hitcount;
 
 	Rigidbody2D rigid;
-    SpriteRenderer sprite;
 
-	void Start()
+	protected override void Start()
 	{
+        base.Start();
         rigid = GetComponent<Rigidbody2D>();
-        sprite = GetComponent<SpriteRenderer>();
         rigid.AddTorque(Random.Range(4000, 8000));
         rigid.AddForce(new Vector2(-Random.Range(25,60), 0));
 		Maxhitcount = Random.Range(2,4);
         frame = Random.Range(30, 80);
     }
 
-    void Update () 
+    protected override void Update () 
     {
 
 		if (frame == 0 || hitcount > Maxhitcount)
@@ -38,8 +37,7 @@ public class ShellDrop : MonoBehaviour
             rigid.gravityScale = 0;
             rigid.velocity = Vector3.zero;
 
-            if (!sprite.isVisible)
-                Destroy(gameObject);
+            base.Update();
 
             return;
 		}

@@ -41,8 +41,6 @@ public class ClassicMode : MonoBehaviour
         }
     }
 
-    Clock clock;
-
     ObjectSpawner spawner;
 
     float StartYstep;

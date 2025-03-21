@@ -1,20 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GalssBottle : TemproryObject 
+public class ExplosiveObject : TemproryObject
 {
-    public AudioClip BreackSound;
+
+    public GameObject Explosive;
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag != "Bullet")
             return;
 
-        SoundPlayer.PlayAudio(BreackSound,0.5f);
+        Instantiate(Explosive, transform).transform.SetParent(null);
         Destroy(gameObject);
-
     }
 }
