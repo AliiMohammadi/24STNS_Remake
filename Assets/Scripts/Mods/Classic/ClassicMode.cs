@@ -31,8 +31,6 @@ public class ClassicMode : MonoBehaviour
     public int SpawnUZIAt;
     public int StartRainAt;
 
-    static bool IsReplay;
-
     float Steps
     {
         get
@@ -48,6 +46,7 @@ public class ClassicMode : MonoBehaviour
     bool SpawnedUzi;
 
     bool Rained;
+
 
     int RandomRainstart;
     int NextLighning;
@@ -73,22 +72,16 @@ public class ClassicMode : MonoBehaviour
         DefualtMagAmount = GameController.instance.PlayerWeapon.Mags;
         GameController.instance.PlayerWeapon.Mags = uint.MaxValue;
 
-        if (IsReplay)
-        {
-            HideMenu();
-            RestartWeapon();
-        }
     }
     void Update()
     {
-        if (!IsReplay)
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                HideMenu();
-                HideMenu();
-                RestartWeapon();
-                IsReplay = true;
-            }
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            HideMenu();
+            HideMenu();
+            RestartWeapon();
+        }
     }
 
     public void AddScore()

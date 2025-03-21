@@ -39,7 +39,6 @@ public class GameController : MonoBehaviour
 	{
         PanelController.ShowGameOverPanel();
 
-        Time.timeScale = 0;
         PlayerWeapon.enabled = false;
         OnGameOver.Invoke();
     }

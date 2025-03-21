@@ -62,6 +62,7 @@
      <Compile Include="Assets\Scripts\GamePlay\Objects\BreakableObject.cs" />
      <Compile Include="Assets\Scripts\GamePlay\Objects\ExplosiveObject.cs" />
      <Compile Include="Assets\Scripts\GamePlay\Objects\TemproryObject.cs" />
+     <Compile Include="Assets\Scripts\GamePlay\Physics\Drop.cs" />
      <Compile Include="Assets\Scripts\GamePlay\Player\animatorFunctionsetter.cs" />
      <Compile Include="Assets\Scripts\GamePlay\Player\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\GamePlay\Player\WeaopnController.cs" />
@@ -73,6 +74,7 @@
      <Compile Include="Assets\Scripts\GamePlay\UI\WeaponUI.cs" />
      <Compile Include="Assets\Scripts\Mods\Classic\ClassicMode.cs" />
      <Compile Include="Assets\Scripts\Mods\Classic\DifficalityController.cs" />
+     <Compile Include="Assets\Scripts\Mods\Classic\GameoverForwardRetry.cs" />
      <Compile Include="Assets\Scripts\Mods\Classic\InfinityBackground.cs" />
      <Compile Include="Assets\Scripts\Mods\Classic\ObjectSpawner.cs" />
      <Compile Include="Assets\Scripts\Mods\Classic\ScoreUI.cs" />
