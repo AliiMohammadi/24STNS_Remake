@@ -28,7 +28,11 @@ public class ClassicMode : MonoBehaviour
     public GameObject MenuUI;
 
     public int MusicAt;
+
+    public int SpawnGlock45At;
+    public int Spawn1911ColtAt;
     public int SpawnUZIAt;
+
     public int StartRainAt;
 
     float Steps
@@ -43,6 +47,8 @@ public class ClassicMode : MonoBehaviour
 
     float StartYstep;
 
+    bool SpawnedGlock;
+    bool Spawned1911;
     bool SpawnedUzi;
 
     bool Rained;
@@ -73,17 +79,18 @@ public class ClassicMode : MonoBehaviour
         GameController.instance.PlayerWeapon.Mags = uint.MaxValue;
 
     }
+
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            HideMenu();
-            HideMenu();
-            RestartWeapon();
-        }
-    }
+        if (!Input.GetKeyDown(KeyCode.W))
+            return;
 
+        HideMenu();
+        HideMenu();
+        RestartWeapon();
+    }
+     
     public void AddScore()
     {
         Score++;
@@ -93,7 +100,7 @@ public class ClassicMode : MonoBehaviour
         RandomSpawn();
         NightDencitySet();
         MusicSet();
-        SpawnUZi();
+        ChechWeaponStates();
         SetRain();
         SparkLightning();
         //clock.SetTime(new System.TimeSpan());
@@ -136,8 +143,18 @@ public class ClassicMode : MonoBehaviour
         if (!GameplayMusic.isPlaying && (int)Score > MusicAt)
             GameplayMusic.Play();
     }
-    void SpawnUZi()
+    void ChechWeaponStates()
     {
+        if (!SpawnedGlock && Score > (ulong)SpawnGlock45At)
+        {
+            SpawnedGlock = true;
+            spawner.SpawnItem(spawner.Objects[10]);
+        }
+        if (!Spawned1911 && Score > (ulong)Spawn1911ColtAt)
+        {
+            Spawned1911 = true;
+            spawner.SpawnItem(spawner.Objects[11]);
+        }
         if (!SpawnedUzi && Score > (ulong)SpawnUZIAt)
         {
             SpawnedUzi = true;

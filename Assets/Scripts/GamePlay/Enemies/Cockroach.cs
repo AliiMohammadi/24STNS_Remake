@@ -10,6 +10,7 @@ public class Cockroach : TemproryObject
 {
 	public Transform Target;
 	public float Speed;
+	public float RotationSpeed;
 
 	public UnityEvent OnCatchTarget;
 
@@ -55,6 +56,17 @@ public class Cockroach : TemproryObject
         //Destroy(gameObject);
     }
 
+    public static float CrossRotation(Vector2 Target, Transform GameObject)
+    {
+        Vector2 direction = Target - (Vector2)GameObject.position;
+
+        direction.Normalize();
+
+        float rotateAmount = Vector3.Cross(direction, GameObject.up).z;
+
+        return -rotateAmount;
+    }
+
     void ChaseTarget(Transform target)
 	{
 		float Distance = Vector2.Distance(transform.position, target.position);
@@ -66,8 +78,11 @@ public class Cockroach : TemproryObject
 			return;
 		}
 
-		Vector2 dir = target.position - transform.position;
-		transform.right = dir.normalized;
-		transform.Translate(new Vector2(Speed, 0) * Time.deltaTime);
+        //Vector2 dir = target.position - transform.position;
+        //transform.right = dir.normalized;
+        transform.Rotate(0, 0, (-CrossRotation(target.position, transform) * (RotationSpeed * 2.5f)));
+
+
+        transform.Translate(new Vector2(0, -Speed) * Time.deltaTime);
     }
 }
