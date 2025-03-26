@@ -12,4 +12,7 @@ public struct WeaponInfo
     public WeaopnController.FierMode Fiermode;
     public uint MagCapacity;
     public AudioClip FeirSound;
+
+    public float MinPitchSound;
+    public float MaxPitchSound;
 }

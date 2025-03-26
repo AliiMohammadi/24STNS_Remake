@@ -108,10 +108,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74470b847afec374abf488f6e48687e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MoveType: 0
+  Health: 100
   Target: {fileID: 0}
   Speed: 1
-  RotationSpeed: 0.5
+  RotationSpeed: 2
   OnCatchTarget:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnDeath:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,

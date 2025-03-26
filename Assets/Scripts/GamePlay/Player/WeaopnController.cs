@@ -42,6 +42,15 @@ public class WeaopnController : MonoBehaviour
 	bool IsAiming;
     uint MagCap = 12;
 
+    float MinPitchSound;
+    float MaxPitchSound;
+
+    void Start()
+    {
+        MinPitchSound = 0.9500f;
+        MinPitchSound = 1.0700f;
+    }
+
 	void Update () 
     {
 		IsAiming = Input.GetMouseButton(1);
@@ -149,7 +158,7 @@ public class WeaopnController : MonoBehaviour
         Instantiate(ShellPrifab, ShellDropPosition).transform.SetParent(null);
 
 
-        SoundPlayer.PlayAudio(ShotSound,1,UnityEngine.Random.Range(0.9500f,1.0700f));
+        SoundPlayer.PlayAudio(ShotSound,1,UnityEngine.Random.Range(MinPitchSound*100, MinPitchSound*100)/100);
         //SoundPlayer.PlayAudio(ShotSound,1,1);
 
         OnShot.Invoke();
@@ -165,6 +174,8 @@ public class WeaopnController : MonoBehaviour
         ShotSound = weapon.FeirSound;
         MagCap = weapon.MagCapacity;
         fierMode = weapon.Fiermode;
+        MinPitchSound = weapon.MinPitchSound;
+        MaxPitchSound = weapon.MaxPitchSound;
 
     }
 }

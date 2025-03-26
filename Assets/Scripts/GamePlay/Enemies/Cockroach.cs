@@ -2,34 +2,53 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Cockroach : TemproryObject 
 {
+	public enum ChaseType
+	{
+		Forward,Zigzag
+	}
+
+	public ChaseType MoveType;
+
+	public int Health;
+
 	public Transform Target;
+
 	public float Speed;
 	public float RotationSpeed;
 
 	public UnityEvent OnCatchTarget;
+	public UnityEvent OnDeath;
 
-	bool Dead;
-	Animator animator;
+    protected bool Dead;
+	protected Animator animator;
 
-	protected override void Start () 
+	int Zigzagdomain = 4;
+    uint x;
+	sbyte i;
+
+    protected override void Start () 
     {
 		base.Start ();
+
+		float size = UnityEngine.Random.Range(0.8000f,1.0000f);
+		transform.localScale = new Vector3(size, size, size);
 
 		if(!Target)
 			Target = GameController.instance.PlayerPosition;
 
-		GameController.instance.cockroaches.Add(this);
 
 		Speed = GameController.instance.EnemiesSpeed;
 
 		animator = GetComponent<Animator>();
 
+		GameController.instance.cockroaches.Add(this);
     }
 	protected override void Update () 
     {
@@ -44,30 +63,7 @@ public class Cockroach : TemproryObject
 			base.CheckVisible();
     }
 
-	public void Die()
-	{
-		Dead = true;
-
-        animator.SetBool("Dead",true);
-
-        GameController.instance.cockroaches.Remove(this);
-		GameController.instance.OnEnemyDie.Invoke();
-		GetComponent<CircleCollider2D>().enabled = false;
-        //Destroy(gameObject);
-    }
-
-    public static float CrossRotation(Vector2 Target, Transform GameObject)
-    {
-        Vector2 direction = Target - (Vector2)GameObject.position;
-
-        direction.Normalize();
-
-        float rotateAmount = Vector3.Cross(direction, GameObject.up).z;
-
-        return -rotateAmount;
-    }
-
-    void ChaseTarget(Transform target)
+    protected virtual void ChaseTarget(Transform target)
 	{
 		float Distance = Vector2.Distance(transform.position, target.position);
 
@@ -78,11 +74,64 @@ public class Cockroach : TemproryObject
 			return;
 		}
 
-        //Vector2 dir = target.position - transform.position;
-        //transform.right = dir.normalized;
-        transform.Rotate(0, 0, (-CrossRotation(target.position, transform) * (RotationSpeed * 2.5f)));
+		Vector2 TargetLocation = target.position;
 
+
+		switch (MoveType)
+		{
+			case ChaseType.Zigzag:
+
+                i++;
+
+                if (i % 100 == 0)
+                {
+                    x++;
+                    i = 0;
+                }
+
+                TargetLocation = new Vector2(target.position.x + (Mathf.Sin(x) * Zigzagdomain), target.position.y + (Mathf.Sin(x) * Zigzagdomain));
+                break;
+
+				default : break;
+		}
+
+        transform.Rotate(0, 0, (-CrossRotation(TargetLocation, transform) * (RotationSpeed * 2.5f)));
 
         transform.Translate(new Vector2(0, -Speed) * Time.deltaTime);
+    }
+
+	public virtual void TakeDamage(int DamageMount)
+	{
+		if (Dead || DamageMount <= 0)
+			return;
+
+        Health-=DamageMount;
+
+		if (Health <= 0)
+			Die();
+
+    }
+	public virtual void Die()
+	{
+		Dead = true;
+
+        animator.SetBool("Dead",true);
+
+        GameController.instance.cockroaches.Remove(this);
+		GameController.instance.OnEnemyDie.Invoke();
+
+		GetComponent<CircleCollider2D>().enabled = false;
+        OnDeath.Invoke();
+    }
+
+    float CrossRotation(Vector2 Target, Transform GameObject)
+    {
+        Vector2 direction = Target - (Vector2)GameObject.position;
+
+        direction.Normalize();
+
+        float rotateAmount = Vector3.Cross(direction, GameObject.up).z;
+
+        return -rotateAmount;
     }
 }

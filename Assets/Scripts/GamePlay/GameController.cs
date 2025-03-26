@@ -24,13 +24,14 @@ public class GameController : MonoBehaviour
 
 	void Awake()
 	{
-		PanelController = FindObjectOfType<GUIpanelController>();
+        instance = this;
+
+        PanelController = FindObjectOfType<GUIpanelController>();
         PlayerWeapon = FindObjectOfType<WeaopnController>();
         cockroaches = FindObjectsOfType<Cockroach>().ToList();
     }
 	void Start () 
     {
-        instance = this;
         Time.timeScale = 1;
 
     }
