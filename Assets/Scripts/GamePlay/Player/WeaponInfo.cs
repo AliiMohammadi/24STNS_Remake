@@ -8,6 +8,7 @@ using UnityEngine;
 public struct WeaponInfo
 {
     public GameObject Appearance;
+    public GameObject Bullet;
 
     public WeaopnController.FierMode Fiermode;
     public uint MagCapacity;

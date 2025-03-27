@@ -36,6 +36,11 @@ public class GameController : MonoBehaviour
 
     }
 
+	public void KillEnemy(GameObject enemy)
+	{
+        cockroaches.Where(x => x.gameObject.Equals(enemy)).First().Die();
+    }
+
 	public void GameOver()
 	{
         PanelController.ShowGameOverPanel();

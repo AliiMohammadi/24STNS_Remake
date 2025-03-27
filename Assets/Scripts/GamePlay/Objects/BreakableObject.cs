@@ -13,8 +13,21 @@ public class BreakableObject : TemproryObject
         if (collision.gameObject.tag != "Bullet")
             return;
 
-        SoundPlayer.PlayAudio(BreackSound,0.5f);
-        Destroy(gameObject);
+        Break();
 
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag != "Bullet")
+            return;
+
+        Break();
+    }
+
+    void Break()
+    {
+        SoundPlayer.PlayAudio(BreackSound, 0.5f);
+        Destroy(gameObject);
     }
 }

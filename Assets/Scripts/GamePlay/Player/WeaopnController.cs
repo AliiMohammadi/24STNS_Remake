@@ -158,7 +158,7 @@ public class WeaopnController : MonoBehaviour
         Instantiate(ShellPrifab, ShellDropPosition).transform.SetParent(null);
 
 
-        SoundPlayer.PlayAudio(ShotSound,1,UnityEngine.Random.Range(MinPitchSound*100, MinPitchSound*100)/100);
+        SoundPlayer.PlayAudio(ShotSound,0.6f,UnityEngine.Random.Range(MinPitchSound*100, MinPitchSound*100)/100);
         //SoundPlayer.PlayAudio(ShotSound,1,1);
 
         OnShot.Invoke();
@@ -176,6 +176,7 @@ public class WeaopnController : MonoBehaviour
         fierMode = weapon.Fiermode;
         MinPitchSound = weapon.MinPitchSound;
         MaxPitchSound = weapon.MaxPitchSound;
+        BulletPrifab = weapon.Bullet;
 
     }
 }

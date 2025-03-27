@@ -13,6 +13,20 @@ public class ExplosiveObject : TemproryObject
         if (collision.gameObject.tag != "Bullet")
             return;
 
+        Explode();
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag != "Bullet")
+            return;
+
+        Explode();
+
+    }
+
+    void Explode()
+    {
         Instantiate(Explosive, transform).transform.SetParent(null);
         Destroy(gameObject);
     }

@@ -24,13 +24,15 @@ public class ClassicMode : MonoBehaviour
     public GameObject RainSound;
     public GameObject Lightning;
 
+    public GameObject Glock45Reward;
+    public GameObject Colt1911Reward;
+    public GameObject UZIReward;
+
     public GameObject GamePlayUI;
     public GameObject MenuUI;
 
     public int MusicAt;
 
-    public int SpawnGlock45At;
-    public int Spawn1911ColtAt;
     public int SpawnUZIAt;
 
     public int StartRainAt;
@@ -47,8 +49,6 @@ public class ClassicMode : MonoBehaviour
 
     float StartYstep;
 
-    bool SpawnedGlock;
-    bool Spawned1911;
     bool SpawnedUzi;
 
     bool Rained;
@@ -78,6 +78,8 @@ public class ClassicMode : MonoBehaviour
         DefualtMagAmount = GameController.instance.PlayerWeapon.Mags;
         GameController.instance.PlayerWeapon.Mags = uint.MaxValue;
 
+        RewardWeaponsCheck();
+
     }
 
     void Update()
@@ -103,9 +105,20 @@ public class ClassicMode : MonoBehaviour
         ChechWeaponStates();
         SetRain();
         SparkLightning();
-        //clock.SetTime(new System.TimeSpan());
+
     }
 
+    void RewardWeaponsCheck()
+    {
+        int record = SaveAndLoad.TopRecord;
+
+        if(record >= 1000)
+            Glock45Reward.SetActive(true);
+        if (record >= 1700)
+            Colt1911Reward.SetActive(true);
+        if (record >= 2500)
+            UZIReward.SetActive(true);
+    }
     void HideMenu()
     {
         MenuUI.SetActive(false);
@@ -145,22 +158,11 @@ public class ClassicMode : MonoBehaviour
     }
     void ChechWeaponStates()
     {
-        if (!SpawnedGlock && Score > (ulong)SpawnGlock45At)
-        {
-            SpawnedGlock = true;
-            spawner.SpawnItem(spawner.Objects[10]);
-        }
-        if (!Spawned1911 && Score > (ulong)Spawn1911ColtAt)
-        {
-            Spawned1911 = true;
-            spawner.SpawnItem(spawner.Objects[11]);
-        }
         if (!SpawnedUzi && Score > (ulong)SpawnUZIAt)
         {
             SpawnedUzi = true;
             spawner.SpawnItem(spawner.Objects[2]);
         }
-
     }
     void SetRain()
     {
@@ -201,6 +203,7 @@ public class ClassicMode : MonoBehaviour
     public void GameOver()
     {
         GameplayMusic.Stop();
+        SaveAndLoad.TopRecord = (int)Score;
     }
     public void Restart()
     {
