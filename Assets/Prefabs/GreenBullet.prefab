@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  Speed: 5400
+  Speed: 4500
   LifeTime: 1
   MaxDeflect: 3
   ReflectSounds:

@@ -23,6 +23,9 @@ public class Cockroach : TemproryObject
 	public float Speed;
 	public float RotationSpeed;
 
+	public float MinSize;
+	public float MaxSize;
+
 	public UnityEvent OnCatchTarget;
 	public UnityEvent OnDeath;
 
@@ -37,7 +40,7 @@ public class Cockroach : TemproryObject
     {
 		base.Start ();
 
-		float size = UnityEngine.Random.Range(0.8000f,1.0000f);
+		float size = UnityEngine.Random.Range(MinSize, MaxSize);
 		transform.localScale = new Vector3(size, size, size);
 
 		if(!Target)

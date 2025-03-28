@@ -47,8 +47,10 @@ public class WeaopnController : MonoBehaviour
 
     void Start()
     {
-        MinPitchSound = 0.9500f;
-        MinPitchSound = 1.0700f;
+        MinPitchSound = 1;
+        MinPitchSound = 1;
+
+        SetWeaponTo(Weapons[0]);
     }
 
 	void Update () 
@@ -152,13 +154,20 @@ public class WeaopnController : MonoBehaviour
 
     public void Fier()
     {
+        if (Ammo <= 0)
+        {
+            Animator.SetBool("ShotLock", false);
+
+            return;
+        }
+
         Ammo--;
 
         Instantiate(BulletPrifab, ProjectilePosition).transform.SetParent(null);
         Instantiate(ShellPrifab, ShellDropPosition).transform.SetParent(null);
 
 
-        SoundPlayer.PlayAudio(ShotSound,0.6f,UnityEngine.Random.Range(MinPitchSound*100, MinPitchSound*100)/100);
+        SoundPlayer.PlayAudio(ShotSound,0.6f,UnityEngine.Random.Range(MinPitchSound, MaxPitchSound));
         //SoundPlayer.PlayAudio(ShotSound,1,1);
 
         OnShot.Invoke();
@@ -172,7 +181,7 @@ public class WeaopnController : MonoBehaviour
         weapon.Appearance.SetActive(true);
 
         ShotSound = weapon.FeirSound;
-        MagCap = weapon.MagCapacity;
+        Ammo = MagCap = weapon.MagCapacity;
         fierMode = weapon.Fiermode;
         MinPitchSound = weapon.MinPitchSound;
         MaxPitchSound = weapon.MaxPitchSound;

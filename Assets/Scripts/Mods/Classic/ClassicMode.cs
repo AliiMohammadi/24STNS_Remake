@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -48,11 +49,10 @@ public class ClassicMode : MonoBehaviour
     ObjectSpawner spawner;
 
     float StartYstep;
-
+    bool Gamestarted;
     bool SpawnedUzi;
 
     bool Rained;
-
 
     int RandomRainstart;
     int NextLighning;
@@ -87,8 +87,11 @@ public class ClassicMode : MonoBehaviour
 
         if (!Input.GetKeyDown(KeyCode.W))
             return;
+        if (Gamestarted)
+            return;
 
-        HideMenu();
+        Gamestarted = true;
+
         HideMenu();
         RestartWeapon();
     }
@@ -203,7 +206,9 @@ public class ClassicMode : MonoBehaviour
     public void GameOver()
     {
         GameplayMusic.Stop();
-        SaveAndLoad.TopRecord = (int)Score;
+
+        if(SaveAndLoad.TopRecord < (int)Score)
+            SaveAndLoad.TopRecord = (int)Score;
     }
     public void Restart()
     {
