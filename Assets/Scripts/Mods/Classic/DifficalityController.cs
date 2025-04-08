@@ -33,7 +33,7 @@ public class DifficalityController : MonoBehaviour
         Add(1, 0.025f);
         Add(5, 0.004f);
 
-        GameController.instance.EnemiesSpeed *= 1.01f;
+        GameController.instance.EnemiesSpeed *= 1.007f;
     }
     
     void Add(int index,float value)

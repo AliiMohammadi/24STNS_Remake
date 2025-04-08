@@ -13343,7 +13343,7 @@ MonoBehaviour:
     SpawnProbeblity: 1.5
   - gameObject: {fileID: 1047347966977770, guid: 8f4ed3412facc244d85979fa55892f44,
       type: 2}
-    SpawnProbeblity: 0.35
+    SpawnProbeblity: 0.8
   - gameObject: {fileID: 1003576842908142, guid: abbbe0641d2651246be03df982576505,
       type: 2}
     SpawnProbeblity: 0
@@ -13376,7 +13376,7 @@ MonoBehaviour:
     SpawnProbeblity: 0
   - gameObject: {fileID: 1700165120981706, guid: fcbe5e6252c268a4cabb416bc07a03f6,
       type: 2}
-    SpawnProbeblity: 1.5
+    SpawnProbeblity: 0
   Spawnmode: 1
 --- !u!114 &1292892207
 MonoBehaviour:
@@ -14292,8 +14292,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1460248250}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.224, y: 1.209, z: -1}
-  m_LocalScale: {x: 0.58659023, y: 0.58659023, z: 0.58659023}
+  m_LocalPosition: {x: -0.198, y: 1.2088, z: -1}
+  m_LocalScale: {x: 0.6144532, y: 0.57691354, z: 0.58659023}
   m_Children: []
   m_Father: {fileID: 1241512284}
   m_RootOrder: 4
@@ -15043,7 +15043,7 @@ MonoBehaviour:
   RayPoint: {fileID: 1754419488}
   ProjectilePosition: {fileID: 1349012601}
   Animator: {fileID: 577258779}
-  Mags: 9
+  Mags: 12
   Ammo: 12
   ShotSound: {fileID: 8300000, guid: f57ea94320ebf3d4eaf10189f7844ce5, type: 3}
   ReloadSound: {fileID: 8300000, guid: 0bbd7d591fc569546bb4b38750f84d97, type: 3}

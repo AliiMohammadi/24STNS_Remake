@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.Experimental.GlobalIllumination;
@@ -62,7 +63,8 @@ public class ClassicMode : MonoBehaviour
     void Start()
     {
 
-        Screen.SetResolution(1439,1080,false);
+        Screen.SetResolution(1439,1080,true);
+        Application.targetFrameRate = 20;
 
         spawner = FindObjectOfType<ObjectSpawner>();
         StartYstep = GameController.instance.PlayerPosition.position.y;
@@ -84,6 +86,7 @@ public class ClassicMode : MonoBehaviour
 
     void Update()
     {
+        Application.targetFrameRate = 20;
 
         if (!Input.GetKeyDown(KeyCode.W))
             return;
@@ -109,6 +112,8 @@ public class ClassicMode : MonoBehaviour
         SetRain();
         SparkLightning();
 
+        if (750 < Score)
+            ReleasTeenCokcroaches();
     }
 
     void RewardWeaponsCheck()
@@ -132,6 +137,7 @@ public class ClassicMode : MonoBehaviour
         GameController.instance.PlayerWeapon.Ammo = GameController.instance.PlayerWeapon.Weapons[0].MagCapacity;
         GameController.instance.PlayerWeapon.Mags = DefualtMagAmount;
     }
+
     void RandomSpawn()
     {
         if ((int)(Steps % StepSpawn) == 0)
@@ -201,6 +207,10 @@ public class ClassicMode : MonoBehaviour
         Lightning.SetActive(true);
 
         NextLighning = (int)Random.Range(Score, Score + 100);
+    }
+    void ReleasTeenCokcroaches()
+    {
+        spawner.Objects[12].SpawnProbeblity = 1.5f;
     }
 
     public void GameOver()
