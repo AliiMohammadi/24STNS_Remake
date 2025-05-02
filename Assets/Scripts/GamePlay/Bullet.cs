@@ -14,7 +14,7 @@ public class Bullet : MonoBehaviour
 	public float Speed;
 	public float LifeTime;
 	public sbyte MaxDeflect = 1;
-
+	public bool FriendlyFier;
 	public AudioClip[] ReflectSounds;
 
 	Rigidbody2D rigid;
@@ -38,23 +38,35 @@ public class Bullet : MonoBehaviour
         SoundPlayer.PlayAudio(ReflectSounds[Random.Range(0, ReflectSounds.Length-1)]);
 
 		if (IsEnemy(collision.gameObject))
-            GameController.instance.KillEnemy(collision.gameObject);
+            GameController.instance.KillCockRoach(collision.gameObject);
 
-		if (Hitcount > MaxDeflect)
+        if (FriendlyFier)
+            if (collision.gameObject.tag == "Player")
+                GameController.instance.GameOver();
+
+        if (Hitcount > MaxDeflect)
 			Destroy(gameObject);
     }
 	void OnTriggerEnter2D(Collider2D collision)
 	{
+        if (FriendlyFier)
+            if (collision.gameObject.tag == "Player")
+                GameController.instance.GameOver();
+
         if (type != BulletType.Brutal)
             return;
 
         SoundPlayer.PlayAudio(ReflectSounds[Random.Range(0, ReflectSounds.Length - 1)]);
 
         if (IsEnemy(collision.gameObject))
-            GameController.instance.KillEnemy(collision.gameObject);
+            GameController.instance.KillCockRoach(collision.gameObject);
+
+        if (FriendlyFier)
+            if (collision.gameObject.tag == "Player")
+                GameController.instance.GameOver();
     }
 
-	protected bool IsEnemy(GameObject gameObject)
+    protected bool IsEnemy(GameObject gameObject)
 	{
 		return gameObject.gameObject.tag == "Enemy";
     }

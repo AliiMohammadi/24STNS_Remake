@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour
 	public GUIpanelController PanelController;
 
 	public List<Cockroach> cockroaches = new List<Cockroach>();
+	public List<Bandit> Bandits = new List<Bandit>();
 
 	public float EnemiesSpeed;
 
@@ -36,12 +37,16 @@ public class GameController : MonoBehaviour
 
     }
 
-	public void KillEnemy(GameObject enemy)
+	public void KillCockRoach(GameObject enemy)
 	{
         cockroaches.Where(x => x.gameObject.Equals(enemy)).First().Die();
     }
+    public void KillBandit(GameObject enemy)
+    {
+        Bandits.Where(x => x.gameObject.Equals(enemy)).First().Die();
+    }
 
-	public void GameOver()
+    public void GameOver()
 	{
         PanelController.ShowGameOverPanel();
 

@@ -114,6 +114,9 @@ public class ClassicMode : MonoBehaviour
 
         if (750 < Score)
             ReleasTeenCokcroaches();
+
+        if (150 < Score)
+            RelaseBandits();
     }
 
     void RewardWeaponsCheck()
@@ -211,6 +214,10 @@ public class ClassicMode : MonoBehaviour
     void ReleasTeenCokcroaches()
     {
         spawner.Objects[12].SpawnProbeblity = 1.5f;
+    }
+    void RelaseBandits()
+    {
+        spawner.Objects[13].SpawnProbeblity = 0.1f;
     }
 
     public void GameOver()

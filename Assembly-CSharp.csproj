@@ -55,7 +55,9 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\CustomClass\SaveAndLoad.cs" />
      <Compile Include="Assets\Scripts\GamePlay\Bullet.cs" />
-     <Compile Include="Assets\Scripts\GamePlay\Enemies\Cockroach.cs" />
+     <Compile Include="Assets\Scripts\GamePlay\Characters\Enemies\Bandit.cs" />
+     <Compile Include="Assets\Scripts\GamePlay\Characters\Enemies\Cockroach.cs" />
+     <Compile Include="Assets\Scripts\GamePlay\Characters\NPC.cs" />
      <Compile Include="Assets\Scripts\GamePlay\Explosive.cs" />
      <Compile Include="Assets\Scripts\GamePlay\GameController.cs" />
      <Compile Include="Assets\Scripts\GamePlay\Items\Ammo.cs" />
