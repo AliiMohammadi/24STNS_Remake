@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 60395149264264604}
   - component: {fileID: 50586974450471754}
   - component: {fileID: 114943273630625504}
+  - component: {fileID: 82750025894119154}
   m_Layer: 0
   m_Name: Bandit
   m_TagString: Untagged
@@ -114,9 +115,9 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 50
-  m_LinearDrag: 50
-  m_AngularDrag: 50
+  m_Mass: 20
+  m_LinearDrag: 15
+  m_AngularDrag: 25
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -151,9 +152,104 @@ PolygonCollider2D:
       - {x: 0.0459094, y: 0.39959952}
       - {x: -0.14743109, y: 0.3022512}
       - {x: -0.088972904, y: 0.084416725}
-      - {x: -0.01894324, y: -0.1899431}
-      - {x: 0.053764135, y: -0.18201834}
-      - {x: 0.0822946, y: -0.1288187}
+      - {x: -0.015919344, y: -0.084105484}
+      - {x: 0.04469214, y: -0.07920442}
+      - {x: 0.0581031, y: -0.07741192}
+--- !u!82 &82750025894119154
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1450495983874598}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: c175714f3342a174a8bcf742265e17c9, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 0.8
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!95 &95734670914178086
 Animator:
   serializedVersion: 3
@@ -220,7 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 423e06af34d9fca4abb2cddebc8df21e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 100
+  Health: 200
   Speed: 2
   RotationSpeed: 2
   OnDeath:
@@ -228,18 +324,17 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  AimDelay: 140
   AimLeastDistance: 6.5
+  Targets:
+  - Object: {fileID: 0}
+    Priority: 0
+    AimType: 0
+  FlashLight: {fileID: 1537184080261780}
   BulletPrifab: {fileID: 1496808972701414, guid: 57c2f4fbc7fc05941819161aadf8683a,
     type: 2}
   FierPosition: {fileID: 4030630888368322}
   ShotSound: {fileID: 8300000, guid: abf8787b5bb14b4408e25f0bd72f6242, type: 3}
-  Targets:
-  - {fileID: 0}
-  OnGetScore:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!212 &212021585437357850
 SpriteRenderer:
   m_ObjectHideFlags: 1

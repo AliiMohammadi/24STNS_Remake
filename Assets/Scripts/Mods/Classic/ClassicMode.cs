@@ -55,10 +55,18 @@ public class ClassicMode : MonoBehaviour
 
     bool Rained;
 
+    bool SpawnedBandit;
+    bool ShowedBandit;
+
     int RandomRainstart;
     int NextLighning;
 
     uint DefualtMagAmount;
+
+    float teen, normal;
+
+    int afterbanditsteps = 20;
+    int afterbanditstepcounter;
 
     void Start()
     {
@@ -116,7 +124,26 @@ public class ClassicMode : MonoBehaviour
             ReleasTeenCokcroaches();
 
         if (150 < Score)
+        {
+            if (!SpawnedBandit)
+            {
+                spawner.SpawnItem(spawner.Objects[13]);
+                SpawnedBandit = true;
+            }
+
             RelaseBandits();
+        }
+
+        if(150 < Score && !ShowedBandit)
+        {
+            if (afterbanditsteps < afterbanditstepcounter)
+            {
+                EnableCockroaches(true);
+                ShowedBandit = true;
+            }
+            else
+                afterbanditstepcounter++;
+        }
     }
 
     void RewardWeaponsCheck()
@@ -218,6 +245,21 @@ public class ClassicMode : MonoBehaviour
     void RelaseBandits()
     {
         spawner.Objects[13].SpawnProbeblity = 0.1f;
+        EnableCockroaches(false);
+    }
+    void EnableCockroaches(bool enable)
+    {
+        if(!enable)
+        {
+            normal = spawner.Objects[0].SpawnProbeblity;
+            teen = spawner.Objects[12].SpawnProbeblity;
+            spawner.Objects[0].SpawnProbeblity = spawner.Objects[13].SpawnProbeblity = 0;
+        }
+        if (enable)
+        {
+            spawner.Objects[0].SpawnProbeblity = normal;
+            spawner.Objects[12].SpawnProbeblity = teen;
+        }
     }
 
     public void GameOver()

@@ -1,35 +1,46 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class Bandit : NPC 
+public class Bandit : NPC
 {
+    [HideInInspector]
+    public int AimDelay = 140;
+    [HideInInspector]
     public float AimLeastDistance;
-    int AimDelay = 140;
 
+    [SerializeField]
+    public List<TargetInfo> Targets;
+
+    public GameObject FlashLight;
     public GameObject BulletPrifab;
     public Transform FierPosition;
     public AudioClip ShotSound;
 
-    public List<Transform> Targets;
 
     protected Animator animator;
 
-    public UnityEvent OnGetScore;
+    AudioSource FootStep;
 
+    int delayValue;
     bool shotallow;
     int x;
+    float distancelimit = 2;
 
     protected override void Start()
     {
         base.Start();
+
         animator = GetComponent<Animator>();
 
-        Targets = new List<Transform>();
+        Targets = new List<TargetInfo>();
 
+        FootStep = GetComponent<AudioSource>();
+        delayValue = AimDelay;
     }
     protected override void Update()
     {
@@ -37,10 +48,10 @@ public class Bandit : NPC
 
         Targets.Clear();
 
-        Targets.Add(GameController.instance.PlayerPosition);
+        Targets.Add(new TargetInfo(GameController.instance.PlayerPosition,1, TargetInfo.AimTypes.Accurate));
 
         foreach (Cockroach t in GameController.instance.cockroaches)
-            Targets.Add(t.transform);
+            Targets.Add(new TargetInfo(t.transform, 1, TargetInfo.AimTypes.Unaccurate));
 
         if (Targets.Count > 0 && !Dead)
             AttackTarget(GetNearstTarget());
@@ -49,11 +60,15 @@ public class Bandit : NPC
     public override void Die()
     {
         animator.SetBool("Dead", true);
+        FlashLight.SetActive(false);
+        FootStep.Stop();
+        GetComponent<Rigidbody2D>().AddForce(transform.up * 40000);
 
         GameController.instance.Bandits.Remove(this);
         GameController.instance.OnEnemyDie.Invoke();
         GetComponent<PolygonCollider2D>().enabled = false;
         GetComponent<SpriteRenderer>().sortingOrder = 0;
+
 
         base.Die();
     }
@@ -64,43 +79,45 @@ public class Bandit : NPC
             TakeDamage(50);
     }
 
-    void AttackTarget(Transform target)
+    void AttackTarget(TargetInfo target)
     {
-        float distance = transform.position.y - target.position.y;
+        float distance = transform.position.y - target.Object.position.y;
 
-        if(Mathf.Abs(distance) > AimLeastDistance)
-            Move(new Vector2(0 , target.position.y));
-        else
+        if (target.AimType == TargetInfo.AimTypes.Unaccurate)
         {
-            if (!AimAt(target))
-                return;
+            if (Mathf.Abs(distance) > distancelimit)
+                LesMove(target);
+            else
+                FootStep.Stop();
 
-            if (!shotallow)
+            if (Mathf.Abs(distance) < 10)
+                AimAndShot(target);
+        }
+        if (target.AimType == TargetInfo.AimTypes.Accurate)
+        {
+            if(Mathf.Abs(distance) > AimLeastDistance)
+                LesMove(target);
+            else
             {
-                x++;
+                FootStep.Stop();
 
-                if (x > AimDelay)
-                    shotallow = true;
-
-                return;
+                AimAndShot(target);
             }
-
-            Shot();
-            shotallow = false;
-            x = 0;
         }
     }
-    Transform GetNearstTarget()
+    TargetInfo GetNearstTarget()
     {
         float nearestDistance = 100.0000f;
 
-        Transform nearest = Targets.First();
+        TargetInfo nearest = Targets.First();
 
         foreach (var item in Targets)
         {
-            float dis = Vector2.Distance(transform.position,item.position);
+            float dis = 0.0000000f;
 
-            if(dis < nearestDistance)
+            dis = Vector2.Distance(transform.position, item.Object.position) / item.Priority;
+
+            if (dis < nearestDistance)
             {
                 nearestDistance = dis;
                 nearest = item;
@@ -108,6 +125,40 @@ public class Bandit : NPC
         }
 
         return nearest;
+    }
+
+    void LesMove(TargetInfo t)
+    {
+        Move(new Vector2(0, t.Object.position.y));
+
+        if (!FootStep.isPlaying)
+            FootStep.Play();
+    }
+    void AimAndShot(TargetInfo t)
+    {
+        if (!AimAt(t.Object))
+            return;
+
+        if (!shotallow)
+        {
+            x++;
+
+            float distance = Vector2.Distance(transform.position,t.Object.position);
+
+            if (distance < AimLeastDistance)
+                delayValue = (int)((distance / (AimLeastDistance - distancelimit)) * AimDelay);
+
+            if (x > Math.Abs(delayValue))
+                shotallow = true;
+
+            return;
+        }
+
+        if(shotallow)
+            Shot();
+        shotallow = false;
+        x = 0;
+        delayValue = AimDelay;
     }
 
     bool AimAt(Transform location)
@@ -129,5 +180,27 @@ public class Bandit : NPC
         SoundPlayer.PlayAudio(ShotSound, 0.6f, UnityEngine.Random.Range(0.9701f, 1.0701f));
 
         animator.SetTrigger("Shot");
+    }
+
+
+    [Serializable]
+    public class TargetInfo
+    {
+        public enum AimTypes
+        {
+            Accurate,Unaccurate
+        }
+        [SerializeField]
+        public Transform Object;
+
+        public float Priority;
+        public AimTypes AimType;
+        
+        public TargetInfo(Transform obje, float pri , AimTypes aimTypes)
+        {
+            Object = obje;
+            Priority = pri;
+            AimType = aimTypes;
+        }
     }
 }
