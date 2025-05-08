@@ -6,18 +6,18 @@ using UnityEngine.UI;
 
 public class TemproryObject : MonoBehaviour 
 {
-	protected SpriteRenderer renderer;
+	protected SpriteRenderer rend;
 
     bool Showed;
 
     protected virtual void Start () 
     {
-        renderer = GetComponent<SpriteRenderer>();
+        rend = GetComponent<SpriteRenderer>();
 
     }
 	protected virtual void Update()
 	{
-        if (renderer.isVisible)
+        if (rend.isVisible)
             Showed = true;
 
         CheckVisible();
@@ -25,7 +25,7 @@ public class TemproryObject : MonoBehaviour
 
 	protected virtual void CheckVisible()
 	{
-        if (Showed && !renderer.isVisible || GameController.instance.IsLeftBehinded(transform.position))
+        if (Showed && !rend.isVisible || GameController.instance.IsLeftBehinded(transform.position))
             Destroy(gameObject);
     }
 }

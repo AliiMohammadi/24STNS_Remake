@@ -43,7 +43,7 @@ public class ClassicMode : MonoBehaviour
     {
         get
         {
-            return (GameController.instance.PlayerPosition.position.y - StartYstep);
+            return Mathf.Abs(GameController.instance.PlayerPosition.position.y - StartYstep);
         }
     }
 
@@ -65,8 +65,8 @@ public class ClassicMode : MonoBehaviour
 
     float teen, normal;
 
-    int afterbanditsteps = 20;
-    int afterbanditstepcounter;
+    //int afterbanditsteps = 1;
+    //int afterbanditstepcounter;
 
     void Start()
     {
@@ -122,28 +122,30 @@ public class ClassicMode : MonoBehaviour
 
         if (750 < Score)
             ReleasTeenCokcroaches();
-
         if (150 < Score)
-        {
-            if (!SpawnedBandit)
-            {
-                spawner.SpawnItem(spawner.Objects[13]);
-                SpawnedBandit = true;
-            }
-
             RelaseBandits();
-        }
 
-        if(150 < Score && !ShowedBandit)
-        {
-            if (afterbanditsteps < afterbanditstepcounter)
-            {
-                EnableCockroaches(true);
-                ShowedBandit = true;
-            }
-            else
-                afterbanditstepcounter++;
-        }
+        //if (150 < Score)
+        //{
+        //    if (!SpawnedBandit)
+        //    {
+        //        spawner.SpawnItem(spawner.Objects[13]);
+        //        SpawnedBandit = true;
+        //    }
+
+        //    RelaseBandits();
+        //}
+
+        //if(150 < Score && !ShowedBandit)
+        //{
+        //    if (afterbanditsteps < afterbanditstepcounter)
+        //    {
+        //        EnableCockroaches(true);
+        //        ShowedBandit = true;
+        //    }
+        //    else
+        //        afterbanditstepcounter++;
+        //}
     }
 
     void RewardWeaponsCheck()
@@ -244,8 +246,7 @@ public class ClassicMode : MonoBehaviour
     }
     void RelaseBandits()
     {
-        spawner.Objects[13].SpawnProbeblity = 0.1f;
-        EnableCockroaches(false);
+        spawner.Objects[13].SpawnProbeblity = 0.4f;
     }
     void EnableCockroaches(bool enable)
     {

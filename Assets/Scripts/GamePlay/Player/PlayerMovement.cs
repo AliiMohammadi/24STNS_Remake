@@ -20,9 +20,14 @@ public class PlayerMovement : MonoBehaviour
 			Move();
     }
 
-	void Move()
+	void FixedUpdate()
+	{
+        if (Input.GetKey(KeyCode.W))
+            OnMoveing.Invoke();
+    }
+
+    void Move()
 	{
 		transform.Translate(new Vector2(0,Speed) * Time.deltaTime);
-        OnMoveing.Invoke();
     }
 }

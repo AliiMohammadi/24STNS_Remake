@@ -30,22 +30,12 @@ public class Drop : MonoBehaviour
 
     protected virtual void Update () 
     {
-
-
-
         framecounter++;
 
 		if(framecounter % frame != 0)
             return;
 
         TouchingGround();
-    }
-
-    protected virtual void Stop()
-    {
-        Rigid.rotation = 0;
-        Rigid.gravityScale = 0;
-        Rigid.velocity = Vector3.zero;
     }
 
     protected virtual void TouchingGround()
@@ -59,13 +49,17 @@ public class Drop : MonoBehaviour
         
         hitcount++;
 
-
-
         framecounter = 0;
 
         frame = (int)(frame / JumpDecrementScale);
 
         Rigid.AddForce(new Vector2(Direction.x, frame * Direction.y * 9.8f * Height));
 
+    }
+    protected virtual void Stop()
+    {
+        Rigid.rotation = 0;
+        Rigid.gravityScale = 0;
+        Rigid.velocity = Vector3.zero;
     }
 }

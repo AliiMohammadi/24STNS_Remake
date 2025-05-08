@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -16,20 +17,28 @@ public class Bandit : NPC
     [SerializeField]
     public List<TargetInfo> Targets;
 
+    public bool Friendly;
+
     public GameObject FlashLight;
     public GameObject BulletPrifab;
+    public GameObject ShellObject;
     public Transform FierPosition;
+    public Transform ShellDropPosition;
     public AudioClip ShotSound;
-
 
     protected Animator animator;
 
-    AudioSource FootStep;
+    protected AudioSource FootStep;
+
+    protected int AimRecoil = 10;
+    protected float MaximumDistanceToShot = 2;
+    protected float MinimumDistanceToShot = 10;
 
     int delayValue;
     bool shotallow;
     int x;
-    float distancelimit = 2;
+
+    Vector3 startangle;
 
     protected override void Start()
     {
@@ -48,13 +57,18 @@ public class Bandit : NPC
 
         Targets.Clear();
 
-        Targets.Add(new TargetInfo(GameController.instance.PlayerPosition,1, TargetInfo.AimTypes.Accurate));
+        if(!Friendly)
+            Targets.Add(new TargetInfo(GameController.instance.PlayerPosition,2.5f, TargetInfo.AimTypes.Accurate));
 
         foreach (Cockroach t in GameController.instance.cockroaches)
             Targets.Add(new TargetInfo(t.transform, 1, TargetInfo.AimTypes.Unaccurate));
 
-        if (Targets.Count > 0 && !Dead)
+
+        if (IsUndecided())
+            IdleMode();
+        else
             AttackTarget(GetNearstTarget());
+
     }
 
     public override void Die()
@@ -69,6 +83,7 @@ public class Bandit : NPC
         GetComponent<PolygonCollider2D>().enabled = false;
         GetComponent<SpriteRenderer>().sortingOrder = 0;
 
+        Dead = true;
 
         base.Die();
     }
@@ -78,20 +93,29 @@ public class Bandit : NPC
         if (collision.gameObject.tag == "Bullet")
             TakeDamage(50);
     }
-
-    void AttackTarget(TargetInfo target)
+    protected virtual void IdleMode()
     {
+        if(FootStep.isPlaying)
+            FootStep.Stop();
+
+    }
+    protected virtual void AttackTarget(TargetInfo target)
+    {
+        if (Dead)
+            return;
+
         float distance = transform.position.y - target.Object.position.y;
 
         if (target.AimType == TargetInfo.AimTypes.Unaccurate)
         {
-            if (Mathf.Abs(distance) > distancelimit)
+
+            if (Mathf.Abs(distance) < MinimumDistanceToShot)
+                AimAndShot(target);
+
+            if (Mathf.Abs(distance) > MaximumDistanceToShot)
                 LesMove(target);
             else
                 FootStep.Stop();
-
-            if (Mathf.Abs(distance) < 10)
-                AimAndShot(target);
         }
         if (target.AimType == TargetInfo.AimTypes.Accurate)
         {
@@ -105,8 +129,11 @@ public class Bandit : NPC
             }
         }
     }
-    TargetInfo GetNearstTarget()
+    protected TargetInfo GetNearstTarget()
     {
+        if (Dead)
+            return null;
+
         float nearestDistance = 100.0000f;
 
         TargetInfo nearest = Targets.First();
@@ -127,14 +154,15 @@ public class Bandit : NPC
         return nearest;
     }
 
-    void LesMove(TargetInfo t)
+    protected void LesMove(TargetInfo t)
     {
-        Move(new Vector2(0, t.Object.position.y));
+        Move(t.Object.position);
 
         if (!FootStep.isPlaying)
             FootStep.Play();
     }
-    void AimAndShot(TargetInfo t)
+
+    protected void AimAndShot(TargetInfo t)
     {
         if (!AimAt(t.Object))
             return;
@@ -146,7 +174,7 @@ public class Bandit : NPC
             float distance = Vector2.Distance(transform.position,t.Object.position);
 
             if (distance < AimLeastDistance)
-                delayValue = (int)((distance / (AimLeastDistance - distancelimit)) * AimDelay);
+                delayValue = (int)((distance / (AimLeastDistance - MaximumDistanceToShot)) * AimDelay);
 
             if (x > Math.Abs(delayValue))
                 shotallow = true;
@@ -161,9 +189,11 @@ public class Bandit : NPC
         delayValue = AimDelay;
     }
 
-    bool AimAt(Transform location)
+    protected bool AimAt(Transform location)
     {
         LookAt(location.position);
+
+        Debug.DrawLine(transform.position, location.position, Color.red);
 
         Vector2 direction = (Vector2)location.position - (Vector2)transform.position;
 
@@ -173,15 +203,28 @@ public class Bandit : NPC
 
         return (Mathf.Abs(rotateAmount) < 0.1f);
     }
-    void Shot()
+    protected virtual void Shot()
     {
-        Instantiate(BulletPrifab, FierPosition).transform.SetParent(null);
+        startangle = FierPosition.eulerAngles;
 
+        FierPosition.eulerAngles = new Vector3(
+        FierPosition.eulerAngles.x,
+        FierPosition.eulerAngles.y ,
+        FierPosition.eulerAngles.z + UnityEngine.Random.Range(-AimRecoil, AimRecoil)
+        );
+
+        Instantiate(BulletPrifab, FierPosition).transform.SetParent(null);
+        Instantiate(ShellObject, ShellDropPosition).transform.SetParent(null);
+        FierPosition.eulerAngles = startangle;
         SoundPlayer.PlayAudio(ShotSound, 0.6f, UnityEngine.Random.Range(0.9701f, 1.0701f));
 
         animator.SetTrigger("Shot");
     }
 
+    protected bool IsUndecided()
+    {
+        return (Targets.Count == 0 && !Dead);
+    }
 
     [Serializable]
     public class TargetInfo

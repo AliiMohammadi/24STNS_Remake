@@ -7,6 +7,8 @@ TextureImporter:
     21300004: siena-s-spritesheet-enemy_2
     21300006: siena-s-spritesheet-enemy_3
     21300008: siena-s-spritesheet-enemy_4
+    21300010: siena-s-spritesheet-enemy_5
+    21300012: siena-s-spritesheet-enemy_6
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -108,7 +110,7 @@ TextureImporter:
         width: 62
         height: 82
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -128,7 +130,7 @@ TextureImporter:
         width: 62
         height: 82
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -148,7 +150,7 @@ TextureImporter:
         width: 62
         height: 82
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -168,7 +170,7 @@ TextureImporter:
         width: 98
         height: 115
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -188,13 +190,53 @@ TextureImporter:
         width: 98
         height: 126
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: f94cafad3b0fa344fbab391630a8b003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: siena-s-spritesheet-enemy_5
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 175
+        width: 58
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f170891869b6c3949ae9776be83f08be
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: siena-s-spritesheet-enemy_6
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 70
+        width: 58
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c1fbd31aea6ac145b2e42e6b47d5443
       vertices: []
       indices: 
       edges: []
